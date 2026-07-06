@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #FBF3E7;
+  color: #2B1810;
+}
+
+/* Signature swirl divider - piped icing motif used under headings */
+.swirl-divider {
+  display: block;
+  width: 120px;
+  height: 18px;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-espresso text-vanilla px-6 py-3 font-body font-medium tracking-wide transition hover:bg-cocoa;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-espresso text-espresso px-6 py-3 font-body font-medium tracking-wide transition hover:bg-espresso hover:text-vanilla;
+}
+
+.card {
+  @apply bg-white/60 border border-espresso/10 rounded-2xl overflow-hidden;
+}
