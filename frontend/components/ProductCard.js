@@ -2,16 +2,11 @@
 
 import Link from "next/link";
 import { useCart } from "@/components/CartContext";
-
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api").replace("/api", "");
+import { getImageUrl } from "@/lib/apiUrl";
 
 export default function ProductCard({ product }) {
   const { addItem } = useCart();
-  const imageUrl = product.image
-    ? product.image.startsWith("http")
-      ? product.image
-      : `${API_BASE}${product.image}`
-    : null;
+  const imageUrl = getImageUrl(product.image);
 
   return (
     <div className="card group flex flex-col">
@@ -34,12 +29,23 @@ export default function ProductCard({ product }) {
           <h3 className="font-display text-lg text-espresso">{product.name}</h3>
         </Link>
         <p className="text-xs uppercase tracking-wide text-cocoa/60 mt-1">{product.category}</p>
+        {/* <div className="mt-3 flex items-center gap-2">
+          <span className="font-semibold text-espresso">${Number(product.current_price).toFixed(2)}</span>
+          {product.discount_price && (
+            <span className="text-sm text-cocoa/50 line-through">${Number(product.price).toFixed(2)}</span>
+          )}
+        </div> */}
         <div className="mt-3 flex items-center gap-2">
           <span className="font-semibold text-espresso">${Number(product.current_price).toFixed(2)}</span>
           {product.discount_price && (
             <span className="text-sm text-cocoa/50 line-through">${Number(product.price).toFixed(2)}</span>
           )}
         </div>
+
+        {/* ADD THIS SYSTEM INSIDE YOUR PRODUCT CARD COMPONENT */}
+        <p className="text-xs text-cocoa/60 mt-2">
+          {product.stock > 0 ? `Only ${product.stock} left in stock` : "Out of stock"}
+        </p>
         <button
           onClick={() => addItem(product, 1)}
           disabled={!product.in_stock}

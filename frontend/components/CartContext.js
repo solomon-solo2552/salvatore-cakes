@@ -40,10 +40,11 @@ export function CartProvider({ children }) {
         {
           id: product.id,
           name: product.name,
-          slug: product.slug,
-          price: Number(product.current_price ?? product.price),
-          image: product.image,
-          quantity,
+          slug: product.slug || "",
+          price: Number(product.current_price ?? product.price ?? 0),
+          image: product.image || "/salvatore-cakes-og-logo.png",
+          details: product.details || null, // 🟢 Preserves tasting box flavor list
+          quantity: product.quantity || quantity,
         },
       ];
     });
@@ -68,7 +69,16 @@ export function CartProvider({ children }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, updateQuantity, removeItem, clearCart, total, count }}
+      value={{
+        items,
+        addItem,
+        addToCart: addItem, // 🟢 Alias so both addItem and addToCart work
+        updateQuantity,
+        removeItem,
+        clearCart,
+        total,
+        count,
+      }}
     >
       {children}
     </CartContext.Provider>

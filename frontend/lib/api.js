@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
 
@@ -8,7 +7,12 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = Cookies.get("access_token");
+  // 🔑 TAB ISOLATION: Read token strictly from the current tab's sessionStorage
+  let token = null;
+  if (typeof window !== "undefined") {
+    token = sessionStorage.getItem("access_token");
+  }
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -16,13 +20,18 @@ api.interceptors.request.use((config) => {
 });
 
 export const setTokens = (access, refresh) => {
-  Cookies.set("access_token", access, { expires: 1 });
-  if (refresh) Cookies.set("refresh_token", refresh, { expires: 7 });
+  // Save exclusively to sessionStorage so each tab maintains a separate session
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem("access_token", access);
+    if (refresh) sessionStorage.setItem("refresh_token", refresh);
+  }
 };
 
 export const clearTokens = () => {
-  Cookies.remove("access_token");
-  Cookies.remove("refresh_token");
+  if (typeof window !== "undefined") {
+    sessionStorage.removeItem("access_token");
+    sessionStorage.removeItem("refresh_token");
+  }
 };
 
 export default api;

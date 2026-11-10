@@ -1,0 +1,52 @@
+# ============================================================================
+# Salvatore Cakes — Root .gitignore
+# ============================================================================
+# Backend and frontend also have their own .gitignore files.
+# This one catches everything else.
+
+# --- Environment files ---
+.env
+.env.*
+!.env.example
+
+# --- Node ---
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- Django ---
+*.sqlite3
+*.sqlite3-journal
+media/
+staticfiles/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Screenshots (if you don't want them committed) ---
+# screenshots/
+
+# --- Vercel / Render ---
+.vercel/

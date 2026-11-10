@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/components/CartContext";
+import { getImageUrl } from "@/lib/apiUrl";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, total } = useCart();
@@ -22,37 +23,66 @@ export default function CartPage() {
 
       <div className="space-y-4 mb-10">
         {items.map((item) => (
-          <div key={item.id} className="card flex items-center gap-4 p-4">
-            <div className="w-20 h-20 rounded-xl bg-blush/20 flex items-center justify-center text-xs text-center text-espresso/50 font-display">
-              {item.name}
+          <div key={item.id} className="card flex items-center gap-4 p-4 border border-espresso/15 rounded-2xl bg-white shadow-sm">
+            {/* THUMBNAIL IMAGE */}
+            <div className="w-20 h-20 rounded-xl overflow-hidden bg-blush/20 border border-espresso/10 flex-shrink-0">
+              <img
+                src={getImageUrl(item.image, "/salvatore-cakes-og-logo.png")}
+                alt={item.name}
+                className="w-full h-full object-cover"
+              />
             </div>
-            <div className="flex-1">
-              <Link href={`/product/${item.slug}`} className="font-display text-lg text-espresso hover:underline">
-                {item.name}
-              </Link>
-              <p className="text-sm text-cocoa/60">${item.price.toFixed(2)} each</p>
+
+            {/* ITEM INFO & TASTING BOX DETAILS */}
+            <div className="flex-1 min-w-0">
+              {item.slug ? (
+                <Link href={`/products/${item.slug}`} className="font-display text-lg text-espresso hover:underline block truncate font-bold">
+                  {item.name}
+                </Link>
+              ) : (
+                <span className="font-display text-lg text-espresso block truncate font-bold">
+                  {item.name}
+                </span>
+              )}
+
+              {/* 🟢 DISPLAYS SELECTED FLAVORS IF TASTING BOX */}
+              {item.details && (
+                <p className="text-xs text-amber-800 font-bold mt-1 bg-amber-50 border border-amber-200/60 rounded-lg px-2.5 py-1 inline-block">
+                  Flavors: {item.details}
+                </p>
+              )}
+
+              <p className="text-xs text-cocoa/70 font-semibold mt-1">
+                ${Number(item.price).toFixed(2)} each
+              </p>
             </div>
-            <div className="flex items-center border border-espresso/20 rounded-full overflow-hidden">
+
+            {/* QUANTITY CONTROLS */}
+            <div className="flex items-center border border-espresso/20 rounded-full overflow-hidden bg-white">
               <button
                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                className="px-3 py-1 hover:bg-espresso/5"
+                className="px-3 py-1 hover:bg-espresso/5 font-bold"
               >
                 −
               </button>
-              <span className="px-3">{item.quantity}</span>
+              <span className="px-3 text-sm font-bold">{item.quantity}</span>
               <button
                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                className="px-3 py-1 hover:bg-espresso/5"
+                className="px-3 py-1 hover:bg-espresso/5 font-bold"
               >
                 +
               </button>
             </div>
-            <span className="w-20 text-right font-semibold text-espresso">
+
+            {/* ITEM TOTAL */}
+            <span className="w-24 text-right font-bold text-espresso text-base">
               ${(item.price * item.quantity).toFixed(2)}
             </span>
+
+            {/* REMOVE BUTTON */}
             <button
               onClick={() => removeItem(item.id)}
-              className="text-blushdark text-sm hover:underline"
+              className="text-amber-800 text-xs font-extrabold hover:underline pl-2"
             >
               Remove
             </button>
@@ -60,8 +90,8 @@ export default function CartPage() {
         ))}
       </div>
 
-      <div className="flex items-center justify-between border-t border-espresso/10 pt-6">
-        <span className="font-display text-2xl text-espresso">
+      <div className="flex items-center justify-between border-t border-espresso/15 pt-6">
+        <span className="font-display text-2xl text-espresso font-bold">
           Total: ${total.toFixed(2)}
         </span>
         <Link href="/checkout" className="btn-primary">

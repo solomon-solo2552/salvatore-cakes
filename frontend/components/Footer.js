@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { CATEGORY_SLUGS } from "@/lib/constants";
+
 export default function Footer() {
   return (
     <footer className="bg-espresso text-vanilla mt-24">
@@ -11,9 +14,9 @@ export default function Footer() {
         <div>
           <h4 className="text-sm uppercase tracking-wide text-gold mb-3">Shop</h4>
           <ul className="space-y-2 text-sm text-vanilla/80">
-            <li><a href="/shop" className="hover:underline">All Cakes</a></li>
-            <li><a href="/shop?category=cupcakes" className="hover:underline">Cupcakes</a></li>
-            <li><a href="/shop?category=eggless-cakes" className="hover:underline">Eggless</a></li>
+            <li><Link href="/shop" className="hover:underline">All Cakes</Link></li>
+            <li><Link href={`/shop?category=${CATEGORY_SLUGS.CUPCAKES}`} className="hover:underline">Cupcakes</Link></li>
+            <li><Link href={`/shop?category=${CATEGORY_SLUGS.EGGLESS}`} className="hover:underline">Eggless</Link></li>
           </ul>
         </div>
         <div>
